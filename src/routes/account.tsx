@@ -8,7 +8,7 @@ export const Route = createFileRoute("/account")({
 });
 
 const nav = [
-  { to: "/account", label: "Profile", icon: User, exact: true },
+  { to: "/account", label: "Profile", icon: User, exact: true as boolean },
   { to: "/account/orders", label: "Orders", icon: Package },
   { to: "/account/addresses", label: "Addresses", icon: MapPin },
   { to: "/account/wishlist", label: "Wishlist", icon: Heart },
@@ -27,7 +27,8 @@ function AccountLayout() {
         <aside className="bg-card border border-border rounded-2xl p-3 h-fit">
           <nav className="space-y-1">
             {nav.map(({ to, label, icon: Icon, exact }) => {
-              const active = exact ? path === to : path.startsWith(to);
+              const isExact = exact ?? false;
+              const active = isExact ? path === to : path.startsWith(to);
               return (
                 <Link key={to} to={to}
                   className={`flex items-center gap-3 px-3.5 h-11 rounded-lg text-sm transition ${active ? "bg-primary-soft text-primary-dark font-semibold" : "hover:bg-secondary text-foreground"}`}>

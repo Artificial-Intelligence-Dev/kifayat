@@ -54,7 +54,7 @@ function ProductPage() {
               <img src={product.images?.[active] ?? product.image} alt={product.name} className="size-full object-cover" />
             </div>
             <div className="grid grid-cols-4 gap-3 mt-4">
-              {product.images?.map((img, i) => (
+              {product.images?.map((img: string, i: number) => (
                 <button key={i} onClick={() => setActive(i)}
                   className={`aspect-square rounded-lg overflow-hidden bg-secondary border-2 transition ${active === i ? "border-primary" : "border-transparent"}`}>
                   <img src={img} alt="" className="size-full object-cover" />
@@ -89,7 +89,7 @@ function ProductPage() {
             <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{product.description}</p>
 
             <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-              {product.features.map((f) => (
+              {product.features.map((f: string) => (
                 <li key={f} className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-primary" />{f}</li>
               ))}
             </ul>

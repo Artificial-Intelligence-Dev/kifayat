@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShippingPolicyRouteImport } from './routes/shipping-policy'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ReturnPolicyRouteImport } from './routes/return-policy'
@@ -38,6 +39,11 @@ import { Route as AccountOrdersOrderIdRouteImport } from './routes/account.order
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShippingPolicyRoute = ShippingPolicyRouteImport.update({
@@ -177,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/return-policy': typeof ReturnPolicyRoute
   '/search': typeof SearchRoute
   '/shipping-policy': typeof ShippingPolicyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/account/addresses': typeof AccountAddressesRoute
   '/account/orders': typeof AccountOrdersRouteWithChildren
@@ -204,6 +211,7 @@ export interface FileRoutesByTo {
   '/return-policy': typeof ReturnPolicyRoute
   '/search': typeof SearchRoute
   '/shipping-policy': typeof ShippingPolicyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/account/addresses': typeof AccountAddressesRoute
   '/account/orders': typeof AccountOrdersRouteWithChildren
@@ -232,6 +240,7 @@ export interface FileRoutesById {
   '/return-policy': typeof ReturnPolicyRoute
   '/search': typeof SearchRoute
   '/shipping-policy': typeof ShippingPolicyRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
   '/account/addresses': typeof AccountAddressesRoute
   '/account/orders': typeof AccountOrdersRouteWithChildren
@@ -261,6 +270,7 @@ export interface FileRouteTypes {
     | '/return-policy'
     | '/search'
     | '/shipping-policy'
+    | '/sitemap.xml'
     | '/terms'
     | '/account/addresses'
     | '/account/orders'
@@ -288,6 +298,7 @@ export interface FileRouteTypes {
     | '/return-policy'
     | '/search'
     | '/shipping-policy'
+    | '/sitemap.xml'
     | '/terms'
     | '/account/addresses'
     | '/account/orders'
@@ -315,6 +326,7 @@ export interface FileRouteTypes {
     | '/return-policy'
     | '/search'
     | '/shipping-policy'
+    | '/sitemap.xml'
     | '/terms'
     | '/account/addresses'
     | '/account/orders'
@@ -343,6 +355,7 @@ export interface RootRouteChildren {
   ReturnPolicyRoute: typeof ReturnPolicyRoute
   SearchRoute: typeof SearchRoute
   ShippingPolicyRoute: typeof ShippingPolicyRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   TermsRoute: typeof TermsRoute
   CategorySlugRoute: typeof CategorySlugRoute
 }
@@ -354,6 +367,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shipping-policy': {
@@ -596,6 +616,7 @@ const rootRouteChildren: RootRouteChildren = {
   ReturnPolicyRoute: ReturnPolicyRoute,
   SearchRoute: SearchRoute,
   ShippingPolicyRoute: ShippingPolicyRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   TermsRoute: TermsRoute,
   CategorySlugRoute: CategorySlugRoute,
 }

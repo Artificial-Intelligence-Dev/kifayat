@@ -1,29 +1,41 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { Header } from "@/components/landing/Header";
+import { Hero } from "@/components/landing/Hero";
+import { Categories } from "@/components/landing/Categories";
+import { Products } from "@/components/landing/Products";
+import { Testimonials } from "@/components/landing/Testimonials";
+import { Newsletter } from "@/components/landing/Newsletter";
+import { Footer } from "@/components/landing/Footer";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Your App" },
-      { name: "description", content: "Replace this with a one-sentence description of your app." },
-      { property: "og:title", content: "Your App" },
-      { property: "og:description", content: "Replace this with a one-sentence description of your app." },
+      { title: "Kifayat — Smart Shopping for Karachi" },
+      { name: "description", content: "Kifayat.co — curated electronics, fashion, beauty and home essentials at honest prices, delivered across Karachi." },
+      { property: "og:title", content: "Kifayat — Smart Shopping for Karachi" },
+      { property: "og:description", content: "Trending products, fair prices, fast delivery and easy 7-day returns across Karachi." },
+    ],
+    links: [
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" },
     ],
   }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main>
+        <Hero />
+        <Categories />
+        <Products />
+        <Testimonials />
+        <Newsletter />
+      </main>
+      <Footer />
     </div>
   );
 }

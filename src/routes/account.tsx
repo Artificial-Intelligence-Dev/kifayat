@@ -30,7 +30,7 @@ function AccountLayout() {
               const isExact = exact ?? false;
               const active = isExact ? path === to : path.startsWith(to);
               return (
-                <Link key={to} to={to}
+                <Link key={to} to={to as never}
                   className={`flex items-center gap-3 px-3.5 h-11 rounded-lg text-sm transition ${active ? "bg-primary-soft text-primary-dark font-semibold" : "hover:bg-secondary text-foreground"}`}>
                   <Icon className="size-4" /> {label}
                 </Link>

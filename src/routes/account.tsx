@@ -14,7 +14,7 @@ const nav = [
   { to: "/account/wishlist", label: "Wishlist", icon: Heart },
   { to: "/account/payment-methods", label: "Payment methods", icon: CreditCard },
   { to: "/account/reviews", label: "Reviews", icon: Star },
-] as const;
+];
 
 function AccountLayout() {
   const path = useRouterState({ select: (s) => s.location.pathname });

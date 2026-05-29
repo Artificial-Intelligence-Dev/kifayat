@@ -1,39 +1,40 @@
-import { Star, Quote } from "lucide-react";
-
 const items = [
-  { name: "Ayesha K.", area: "Clifton, Karachi", text: "Delivery was fast and the product packaging felt premium. My new go-to for online shopping in Karachi.", rating: 5 },
-  { name: "Bilal R.", area: "DHA Phase 6", text: "Honest prices and the return process was painless. Customer support actually replied within minutes.", rating: 5 },
-  { name: "Saima A.", area: "Gulshan-e-Iqbal", text: "Loved the curated beauty section. Got exactly what I ordered, nothing like the usual marketplace surprises.", rating: 5 },
+  { q: "The curation is unmatched. Finally a shopping experience in Karachi that feels intentional, not transactional.", who: "Bilal R.", where: "DHA Phase 6", city: "Karachi" },
+  { q: "Delivery was at my door within hours. The packaging alone made me trust the brand on first order.", who: "Ayesha K.", where: "Clifton", city: "Karachi" },
+  { q: "I came for one thing and stayed for the editorial. Kifayat reads like a magazine and ships like a logistics company.", who: "Saima A.", where: "Gulshan-e-Iqbal", city: "Karachi" },
 ];
 
 export function Testimonials() {
   return (
-    <section className="py-16 lg:py-24">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center max-w-xl mx-auto mb-12">
-          <span className="text-xs font-semibold uppercase tracking-wider text-primary">Loved across the city</span>
-          <h2 className="text-3xl lg:text-4xl mt-2">What shoppers say</h2>
-        </div>
-        <div className="grid md:grid-cols-3 gap-6">
-          {items.map((t) => (
-            <figure key={t.name} className="relative bg-card rounded-2xl p-6 border-l-4 border-primary shadow-[var(--shadow-e1)]">
-              <Quote className="size-6 text-primary-soft absolute top-5 right-5" />
-              <div className="flex gap-0.5 mb-3">
-                {Array.from({ length: t.rating }).map((_, i) => (
-                  <Star key={i} className="size-4 fill-warning text-warning" />
-                ))}
-              </div>
-              <blockquote className="text-sm leading-relaxed">{t.text}</blockquote>
-              <figcaption className="mt-4 flex items-center gap-3">
-                <div className="size-10 rounded-full bg-gradient-to-br from-primary to-accent grid place-items-center text-primary-foreground font-semibold">
-                  {t.name[0]}
-                </div>
-                <div>
-                  <div className="text-sm font-semibold">{t.name}</div>
-                  <div className="text-xs text-muted-foreground">{t.area}</div>
-                </div>
+    <section className="bg-coal text-bone py-28 lg:py-40 px-5 lg:px-10">
+      <div className="max-w-5xl mx-auto text-center">
+        <p className="eyebrow text-bone/50 mb-10">Loved across the city</p>
+        <div className="w-px h-16 bg-bone/20 mx-auto mb-10" />
+
+        <div className="space-y-20 lg:space-y-28">
+          {items.map((t, i) => (
+            <figure key={i} className="max-w-3xl mx-auto">
+              <blockquote className="font-display italic text-3xl sm:text-4xl lg:text-6xl leading-[1.1] tracking-tight">
+                &ldquo;{t.q}&rdquo;
+              </blockquote>
+              <figcaption className="mt-8 eyebrow text-bone/50">
+                {t.who} — {t.where}, {t.city}
               </figcaption>
             </figure>
+          ))}
+        </div>
+
+        <div className="w-px h-16 bg-bone/20 mx-auto mt-16" />
+        <div className="mt-10 grid grid-cols-3 gap-6 max-w-xl mx-auto text-center">
+          {[
+            { n: "12k+", l: "Monthly shoppers" },
+            { n: "4.8", l: "Avg. rating" },
+            { n: "98%", l: "On-time delivery" },
+          ].map((s) => (
+            <div key={s.l}>
+              <p className="font-display italic text-4xl lg:text-5xl">{s.n}</p>
+              <p className="eyebrow text-bone/40 mt-2">{s.l}</p>
+            </div>
           ))}
         </div>
       </div>

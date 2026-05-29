@@ -1,61 +1,76 @@
-import { Heart, Star, ShoppingCart } from "lucide-react";
-import h from "@/assets/p-headphones.jpg";
-import w from "@/assets/p-watch.jpg";
-import s from "@/assets/p-sneakers.jpg";
-import se from "@/assets/p-serum.jpg";
-
-const products = [
-  { name: "Wireless Over-Ear Headphones", price: 4499, old: 6999, rating: 4.7, reviews: 218, img: h, badge: "−35%" },
-  { name: "Classic Steel Smartwatch", price: 7899, old: 10999, rating: 4.6, reviews: 142, img: w, badge: "New" },
-  { name: "Minimal White Sneakers", price: 3299, old: 4499, rating: 4.8, reviews: 384, img: s, badge: "Bestseller" },
-  { name: "Vitamin C Glow Serum 30ml", price: 1499, old: 1999, rating: 4.5, reviews: 96, img: se },
-];
+import { Link } from "@tanstack/react-router";
+import { Heart, ArrowUpRight } from "lucide-react";
+import { products } from "@/lib/shop-data";
 
 export function Products() {
+  const featured = products.slice(0, 8);
   return (
-    <section id="products" className="py-16 lg:py-24 bg-secondary/50">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-end justify-between mb-8">
+    <section className="bg-paper py-20 lg:py-32">
+      <div className="max-w-[1600px] mx-auto px-5 lg:px-10">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-end mb-12 lg:mb-20">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary">Featured for you</span>
-            <h2 className="text-3xl lg:text-4xl mt-2">Trending this week</h2>
+            <p className="eyebrow text-coal/50 mb-3">The Weekly Edit</p>
+            <h2 className="font-display italic text-5xl lg:text-8xl leading-[0.9]">Trending<br/>Now.</h2>
           </div>
-          <a href="#" className="text-sm font-medium text-primary hover:text-primary-dark">See all →</a>
+          <p className="max-w-md text-coal/70 leading-relaxed lg:text-lg lg:justify-self-end">
+            Eight pieces chosen this week — selected for craft, value, and the way they fit into everyday Karachi life.
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-          {products.map((p) => (
-            <article key={p.name} className="group bg-card rounded-2xl overflow-hidden border border-border hover:shadow-[var(--shadow-e2)] transition">
-              <div className="relative aspect-square bg-secondary overflow-hidden">
-                <img src={p.img} alt={p.name} loading="lazy" width={800} height={800}
-                  className="size-full object-cover transition duration-500 group-hover:scale-105" />
-                {p.badge && (
-                  <span className="absolute top-3 left-3 px-2 py-1 rounded-md bg-primary text-primary-foreground text-[10px] font-semibold">
-                    {p.badge}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-14 lg:gap-x-8 lg:gap-y-20">
+          {featured.map((p, i) => (
+            <article key={p.id} className="group">
+              <Link to="/products/$productId" params={{ productId: p.slug }} className="block">
+                <div className="relative aspect-[3/4] bg-bone overflow-hidden mb-4 lg:mb-5">
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    loading="lazy"
+                    width={600}
+                    height={800}
+                    className="size-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  />
+                  {p.badge && (
+                    <span className="absolute top-3 left-3 bg-coal text-bone eyebrow px-2 py-1">{p.badge}</span>
+                  )}
+                  <button
+                    aria-label="Wishlist"
+                    onClick={(e) => e.preventDefault()}
+                    className="absolute top-3 right-3 size-9 grid place-items-center text-coal/60 hover:text-coal hover:bg-bone/80 rounded-full transition"
+                  >
+                    <Heart className="size-4" strokeWidth={1.4} />
+                  </button>
+                  <span className="absolute inset-x-3 bottom-3 h-11 bg-coal text-bone eyebrow flex items-center justify-center gap-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition">
+                    Quick view <ArrowUpRight className="size-3.5" strokeWidth={1.5} />
                   </span>
-                )}
-                <button aria-label="Add to wishlist"
-                  className="absolute top-3 right-3 size-9 rounded-full bg-background/90 backdrop-blur grid place-items-center hover:bg-background hover:text-primary transition">
-                  <Heart className="size-4" />
-                </button>
-                <button className="absolute inset-x-3 bottom-3 h-10 rounded-pill bg-foreground text-background text-sm font-semibold flex items-center justify-center gap-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition">
-                  <ShoppingCart className="size-4" /> Add to cart
-                </button>
-              </div>
-              <div className="p-4">
-                <h3 className="font-medium text-sm leading-snug line-clamp-2 min-h-[2.6em]">{p.name}</h3>
-                <div className="flex items-center gap-1 mt-1.5 text-xs text-muted-foreground">
-                  <Star className="size-3.5 fill-warning text-warning" />
-                  <span className="text-foreground font-medium">{p.rating}</span>
-                  <span>({p.reviews})</span>
+                  <span className="absolute bottom-3 left-3 font-mono text-[10px] text-coal/60 bg-bone/80 px-1.5 py-0.5">
+                    {String(i + 1).padStart(2, "0")} / {String(featured.length).padStart(2, "0")}
+                  </span>
                 </div>
-                <div className="mt-2 flex items-baseline gap-2">
-                  <span className="text-primary-dark font-display font-bold">Rs {p.price.toLocaleString()}</span>
-                  <span className="text-xs text-muted-foreground line-through">Rs {p.old.toLocaleString()}</span>
+              </Link>
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="eyebrow text-coal/40 mb-1.5">{p.brand}</p>
+                  <Link to="/products/$productId" params={{ productId: p.slug }}
+                    className="block font-display italic text-xl lg:text-2xl leading-tight hover:opacity-60 transition line-clamp-2">
+                    {p.name}
+                  </Link>
+                </div>
+                <div className="text-right shrink-0">
+                  <p className="text-sm font-medium">Rs {p.price.toLocaleString()}</p>
+                  {p.oldPrice && <p className="text-[10px] text-coal/40 line-through mt-0.5">Rs {p.oldPrice.toLocaleString()}</p>}
                 </div>
               </div>
             </article>
           ))}
+        </div>
+
+        <div className="mt-20 lg:mt-28 flex justify-center">
+          <Link to="/products"
+            className="group inline-flex items-center gap-3 border border-coal/15 px-10 py-5 eyebrow hover:bg-coal hover:text-bone transition-colors duration-500">
+            Explore All Drops
+            <ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" strokeWidth={1.5} />
+          </Link>
         </div>
       </div>
     </section>

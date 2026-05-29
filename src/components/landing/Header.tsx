@@ -1,75 +1,76 @@
 import { Link } from "@tanstack/react-router";
-import { Search, ShoppingCart, Heart, User, Menu, ChevronDown } from "lucide-react";
+import { Search, ShoppingBag, Menu, User } from "lucide-react";
 import { useState } from "react";
 import { categories } from "@/lib/shop-data";
 
 export function Header() {
-  const [, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 bg-background/90 backdrop-blur border-b border-border">
-      <div className="bg-primary-dark text-primary-foreground text-xs">
-        <div className="max-w-7xl mx-auto px-4 h-8 flex items-center justify-between">
-          <span>Free delivery on orders above Rs 2,500 in Karachi</span>
-          <div className="hidden sm:flex gap-4 opacity-90">
-            <Link to="/account/orders" className="hover:opacity-100">Track Order</Link>
-            <Link to="/faq" className="hover:opacity-100">Help</Link>
+    <header className="sticky top-0 z-50">
+      {/* Utility bar */}
+      <div className="bg-coal text-bone">
+        <div className="max-w-[1600px] mx-auto px-5 lg:px-10 h-9 flex items-center justify-between eyebrow">
+          <span className="hidden sm:inline opacity-80">Karachi Delivery · Free over Rs 2,500</span>
+          <span className="sm:hidden opacity-80">Free over Rs 2,500</span>
+          <div className="flex items-center gap-5 opacity-80">
+            <Link to="/account/orders" className="hover:opacity-100 transition">Track</Link>
+            <span className="hidden sm:inline">EN · PKR</span>
+            <Link to="/contact" className="hover:opacity-100 transition">Help</Link>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center gap-4">
-        <button className="md:hidden p-2 -ml-2" aria-label="Menu" onClick={() => setOpen((v) => !v)}>
-          <Menu className="size-5" />
-        </button>
-
-        <Link to="/" className="flex items-center gap-2">
-          <div className="size-9 rounded-md bg-gradient-to-br from-primary to-accent grid place-items-center text-primary-foreground font-display font-bold">K</div>
-          <span className="font-display font-bold text-xl tracking-tight">Kifayat</span>
-        </Link>
-
-        <form action="/search" className="hidden md:flex flex-1 max-w-xl mx-4">
-          <div className="relative w-full">
-            <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-            <input name="q" type="search" placeholder="Search products, brands, categories…"
-              className="w-full h-10 pl-10 pr-4 rounded-pill bg-secondary border border-transparent focus:border-primary focus:bg-background outline-none text-sm transition" />
+      {/* Main nav */}
+      <div className="bg-bone/85 backdrop-blur-xl border-b border-coal/8">
+        <div className="max-w-[1600px] mx-auto px-5 lg:px-10 h-16 lg:h-20 grid grid-cols-[1fr_auto_1fr] items-center">
+          <div className="flex items-center gap-6">
+            <button onClick={() => setOpen((v) => !v)} className="lg:hidden -ml-1 p-1" aria-label="Menu">
+              <Menu className="size-5" strokeWidth={1.2} />
+            </button>
+            <nav className="hidden lg:flex items-center gap-7 eyebrow text-coal/70">
+              {categories.slice(0, 5).map((c) => (
+                <Link key={c.slug} to="/category/$slug" params={{ slug: c.slug }} className="hover:text-coal transition">
+                  {c.name}
+                </Link>
+              ))}
+              <Link to="/blog" className="hover:text-coal transition">Journal</Link>
+            </nav>
           </div>
-        </form>
 
-        <nav className="ml-auto flex items-center gap-1 text-foreground">
-          <Link to="/account" className="hidden sm:flex items-center gap-2 px-3 h-10 rounded-md hover:bg-secondary text-sm">
-            <User className="size-4" /> <span className="hidden lg:inline">Account</span>
+          <Link to="/" className="font-display italic text-3xl lg:text-4xl tracking-tight leading-none">
+            Kifayat
           </Link>
-          <Link to="/account/wishlist" className="p-2.5 rounded-md hover:bg-secondary relative" aria-label="Wishlist">
-            <Heart className="size-5" />
-          </Link>
-          <Link to="/cart" className="p-2.5 rounded-md hover:bg-secondary relative" aria-label="Cart">
-            <ShoppingCart className="size-5" />
-            <span className="absolute -top-0.5 -right-0.5 size-4 rounded-full bg-primary text-primary-foreground text-[10px] font-semibold grid place-items-center">3</span>
-          </Link>
-        </nav>
-      </div>
 
-      <div className="hidden md:block border-t border-border">
-        <div className="max-w-7xl mx-auto px-4 h-11 flex items-center gap-1 text-sm">
-          <Link to="/products" className="flex items-center gap-1.5 px-3 h-9 rounded-md bg-primary-soft text-primary-dark font-medium">
-            <Menu className="size-4" /> All Categories <ChevronDown className="size-3.5" />
-          </Link>
-          {categories.slice(0, 6).map((c) => (
-            <Link key={c.slug} to="/category/$slug" params={{ slug: c.slug }}
-              className="px-3 h-9 grid place-items-center rounded-md hover:bg-secondary text-muted-foreground hover:text-foreground transition">
-              {c.name}
+          <div className="flex items-center justify-end gap-5 lg:gap-6">
+            <button aria-label="Search" className="p-1 hover:opacity-60 transition">
+              <Search className="size-5" strokeWidth={1.2} />
+            </button>
+            <Link to="/account" aria-label="Account" className="hidden sm:block p-1 hover:opacity-60 transition">
+              <User className="size-5" strokeWidth={1.2} />
             </Link>
-          ))}
+            <Link to="/cart" aria-label="Cart" className="p-1 relative hover:opacity-60 transition">
+              <ShoppingBag className="size-5" strokeWidth={1.2} />
+              <span className="absolute -top-1 -right-1.5 size-4 rounded-full bg-coal text-bone text-[9px] font-semibold grid place-items-center">3</span>
+            </Link>
+          </div>
         </div>
       </div>
 
-      <form action="/search" className="md:hidden px-4 pb-3">
-        <div className="relative">
-          <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <input name="q" type="search" placeholder="Search Kifayat…"
-            className="w-full h-10 pl-10 pr-4 rounded-pill bg-secondary outline-none text-sm" />
+      {/* Mobile drawer */}
+      {open && (
+        <div className="lg:hidden bg-bone border-b border-coal/8 animate-fade-up">
+          <div className="px-5 py-6 flex flex-col gap-4">
+            {categories.map((c) => (
+              <Link key={c.slug} to="/category/$slug" params={{ slug: c.slug }}
+                onClick={() => setOpen(false)}
+                className="font-display italic text-2xl text-coal">
+                {c.name}
+              </Link>
+            ))}
+            <Link to="/blog" onClick={() => setOpen(false)} className="font-display italic text-2xl text-coal">Journal</Link>
+          </div>
         </div>
-      </form>
+      )}
     </header>
   );
 }

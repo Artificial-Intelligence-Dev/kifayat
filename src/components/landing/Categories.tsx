@@ -1,44 +1,50 @@
+import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
-import el from "@/assets/cat-electronics.jpg";
-import fa from "@/assets/cat-fashion.jpg";
-import ho from "@/assets/cat-home.jpg";
-import be from "@/assets/cat-beauty.jpg";
-
-const cats = [
-  { name: "Electronics", count: "1,240+ products", img: el },
-  { name: "Fashion", count: "2,800+ products", img: fa },
-  { name: "Home & Kitchen", count: "960+ products", img: ho },
-  { name: "Beauty", count: "740+ products", img: be },
-];
+import { categories } from "@/lib/shop-data";
 
 export function Categories() {
   return (
-    <section id="categories" className="py-16 lg:py-24">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex items-end justify-between mb-8">
+    <section className="bg-bone py-20 lg:py-32">
+      <div className="max-w-[1600px] mx-auto">
+        <div className="px-5 lg:px-10 flex items-end justify-between mb-10 lg:mb-14">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-wider text-primary">Shop by category</span>
-            <h2 className="text-3xl lg:text-4xl mt-2">Find what you need</h2>
+            <p className="eyebrow text-coal/50 mb-3">The Curation</p>
+            <h2 className="font-display italic text-5xl lg:text-7xl">By Category</h2>
           </div>
-          <a href="#" className="hidden sm:inline-flex items-center gap-1 text-sm font-medium text-primary hover:text-primary-dark">
-            View all <ArrowUpRight className="size-4" />
-          </a>
+          <Link to="/products" className="hidden sm:inline-flex eyebrow border-b border-coal pb-1 hover:opacity-60 transition">
+            View All
+          </Link>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-          {cats.map((c) => (
-            <a key={c.name} href="#" className="group relative aspect-[4/5] rounded-2xl overflow-hidden bg-secondary">
-              <img src={c.img} alt={c.name} loading="lazy" width={800} height={800}
-                className="absolute inset-0 size-full object-cover transition duration-500 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-              <div className="absolute inset-0 p-5 flex flex-col justify-end text-white">
-                <div className="font-display text-xl font-semibold">{c.name}</div>
-                <div className="text-xs opacity-80">{c.count}</div>
+        <div className="flex gap-5 lg:gap-8 overflow-x-auto snap-x no-scrollbar pb-4 pl-5 lg:pl-10 pr-5 lg:pr-10">
+          {categories.map((c, i) => (
+            <Link
+              key={c.slug}
+              to="/category/$slug"
+              params={{ slug: c.slug }}
+              className="snap-start group flex-none w-[72%] sm:w-[44%] lg:w-[28%]"
+            >
+              <div className="relative aspect-[3/4] bg-paper overflow-hidden mb-5">
+                <img
+                  src={c.image}
+                  alt={c.name}
+                  loading="lazy"
+                  width={600}
+                  height={800}
+                  className="size-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <span className="absolute top-4 left-4 eyebrow text-bone bg-coal/60 backdrop-blur px-2 py-1">
+                  N° {String(i + 1).padStart(2, "0")}
+                </span>
+                <span className="absolute bottom-4 right-4 size-10 rounded-full bg-bone grid place-items-center opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition">
+                  <ArrowUpRight className="size-4 text-coal" strokeWidth={1.5} />
+                </span>
               </div>
-              <div className="absolute top-4 right-4 size-9 rounded-full bg-background/95 text-foreground grid place-items-center translate-y-1 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition">
-                <ArrowUpRight className="size-4" />
+              <div className="flex items-baseline justify-between">
+                <h3 className="font-display italic text-2xl lg:text-3xl">{c.name}</h3>
+                <p className="eyebrow text-coal/40">{c.count}+ items</p>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

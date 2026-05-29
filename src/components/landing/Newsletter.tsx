@@ -1,35 +1,30 @@
-import { Mail } from "lucide-react";
-
 export function Newsletter() {
   return (
-    <section className="py-16">
-      <div className="max-w-5xl mx-auto px-4">
-        <div className="relative overflow-hidden rounded-3xl p-8 lg:p-14" style={{ background: "var(--gradient-brand)" }}>
-          <div className="absolute -top-16 -right-16 size-64 rounded-full bg-white/10 blur-2xl" aria-hidden />
-          <div className="absolute -bottom-12 -left-12 size-48 rounded-full bg-white/10 blur-2xl" aria-hidden />
-          <div className="relative grid lg:grid-cols-2 gap-8 items-center text-primary-foreground">
-            <div>
-              <h2 className="text-2xl lg:text-3xl text-primary-foreground">Save more, every week.</h2>
-              <p className="mt-2 text-primary-foreground/85 max-w-md text-sm lg:text-base">
-                Join our newsletter for exclusive Karachi deals, early access to drops, and Rs 200 off your first order.
-              </p>
-            </div>
-            <form className="flex flex-col sm:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>
-              <div className="relative flex-1">
-                <Mail className="size-4 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="email"
-                  required
-                  placeholder="you@example.com"
-                  className="w-full h-12 pl-11 pr-4 rounded-pill bg-background text-foreground placeholder:text-muted-foreground outline-none"
-                />
-              </div>
-              <button className="h-12 px-6 rounded-pill bg-foreground text-background font-semibold hover:opacity-90 transition">
-                Subscribe
-              </button>
-            </form>
-          </div>
-        </div>
+    <section className="bg-bone py-28 lg:py-40 px-5 lg:px-10">
+      <div className="max-w-2xl mx-auto text-center">
+        <p className="eyebrow text-coal/50 mb-6">N° 04 · Subscribe</p>
+        <h2 className="font-display italic text-5xl sm:text-6xl lg:text-7xl leading-[0.95]">
+          The Kifayat List.
+        </h2>
+        <p className="mt-8 max-w-md mx-auto text-coal/60 text-sm lg:text-base leading-relaxed">
+          A weekly briefing on style, tech and Karachi essentials — plus first access to drops before they go public.
+        </p>
+
+        <form className="mt-14 max-w-lg mx-auto relative">
+          <input
+            type="email"
+            placeholder="EMAIL ADDRESS"
+            className="w-full bg-transparent border-b border-coal/60 py-4 pr-28 eyebrow tracking-[0.2em] focus:outline-none focus:border-coal placeholder:text-coal/30"
+          />
+          <button
+            type="submit"
+            className="absolute right-0 bottom-3 eyebrow font-bold border-b border-coal pb-0.5 hover:opacity-60 transition"
+          >
+            Join →
+          </button>
+        </form>
+
+        <p className="mt-8 eyebrow text-coal/30">No spam. Unsubscribe anytime.</p>
       </div>
     </section>
   );

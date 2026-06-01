@@ -33,13 +33,14 @@ export function Products() {
                   {p.badge && (
                     <span className="absolute top-3 left-3 bg-coal text-bone eyebrow px-2 py-1">{p.badge}</span>
                   )}
-                  <button
+                  <span
+                    role="button"
                     aria-label="Wishlist"
-                    onClick={(e) => e.preventDefault()}
-                    className="absolute top-3 right-3 size-9 grid place-items-center text-coal/60 hover:text-coal hover:bg-bone/80 rounded-full transition"
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                    className="absolute top-3 right-3 size-9 grid place-items-center text-coal/60 hover:text-coal hover:bg-bone/80 rounded-full transition cursor-pointer"
                   >
                     <Heart className="size-4" strokeWidth={1.4} />
-                  </button>
+                  </span>
                   <span className="absolute inset-x-3 bottom-3 h-11 bg-coal text-bone eyebrow flex items-center justify-center gap-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition">
                     Quick view <ArrowUpRight className="size-3.5" strokeWidth={1.5} />
                   </span>

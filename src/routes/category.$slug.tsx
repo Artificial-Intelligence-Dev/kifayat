@@ -35,7 +35,7 @@ function CategoryPage() {
         {products.length === 0 ? (
           <p className="text-center text-muted-foreground py-16">No products yet in this category.</p>
         ) : (
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
             {products.map((p: import("@/lib/shop-data").Product) => <ProductCard key={p.id} p={p} />)}
           </div>
         )}

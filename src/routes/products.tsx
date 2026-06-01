@@ -111,7 +111,7 @@ function ProductsPage() {
                 className="mt-3 text-primary text-sm font-medium hover:underline">Reset filters</button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 lg:gap-12">
               {filtered.map((p) => <ProductCard key={p.id} p={p} />)}
             </div>
           )}

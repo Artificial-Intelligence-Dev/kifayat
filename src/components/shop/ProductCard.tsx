@@ -14,10 +14,10 @@ export function ProductCard({ p }: { p: Product }) {
               {p.badge}
             </span>
           )}
-          <button aria-label="Add to wishlist" onClick={(e) => e.preventDefault()}
-            className="absolute top-3 right-3 size-9 rounded-full bg-background/90 backdrop-blur grid place-items-center hover:bg-background hover:text-primary transition">
+          <span role="button" aria-label="Add to wishlist" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+            className="absolute top-3 right-3 size-9 rounded-full bg-background/90 backdrop-blur grid place-items-center hover:bg-background hover:text-primary transition cursor-pointer">
             <Heart className="size-4" />
-          </button>
+          </span>
           <span className="absolute inset-x-3 bottom-3 h-10 rounded-pill bg-foreground text-background text-sm font-semibold flex items-center justify-center gap-2 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition">
             <ShoppingCart className="size-4" /> Quick add
           </span>

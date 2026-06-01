@@ -3,7 +3,7 @@ import { Heart, ArrowUpRight } from "lucide-react";
 import { products } from "@/lib/shop-data";
 
 export function Products() {
-  const featured = products.slice(0, 8);
+  const featured = products.slice(0, 6);
   return (
     <section className="bg-paper py-20 lg:py-32">
       <div className="max-w-[1600px] mx-auto px-5 lg:px-10">

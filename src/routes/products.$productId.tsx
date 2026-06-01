@@ -92,7 +92,7 @@ function ProductPage() {
                 {String(active + 1).padStart(2, "0")} / {String(images.length).padStart(2, "0")}
               </span>
               <div className="absolute bottom-5 left-5 right-5 flex gap-2">
-                {images.map((img, i) => (
+                {images.map((img: string, i: number) => (
                   <button key={i} onClick={() => setActive(i)}
                     className={`size-14 lg:size-16 shrink-0 overflow-hidden border-2 transition ${active === i ? "border-coal" : "border-bone/60 hover:border-coal/50"}`}>
                     <img src={img} alt="" className="size-full object-cover" />

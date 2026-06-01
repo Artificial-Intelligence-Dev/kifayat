@@ -167,7 +167,7 @@ function ProductPage() {
           <Cell className="col-span-12 lg:col-span-7 bg-paper">
             <p className="eyebrow text-coal/50 mb-3">Notes — 02 — Specification</p>
             <ul className="divide-y divide-coal/10">
-              {product.features.map((f, i) => (
+              {product.features.map((f: string, i: number) => (
                 <li key={i} className="flex items-center justify-between py-3">
                   <span className="font-mono text-[10px] text-coal/40">{String(i + 1).padStart(2, "0")}</span>
                   <span className="flex-1 px-4 text-[15px]">{f}</span>

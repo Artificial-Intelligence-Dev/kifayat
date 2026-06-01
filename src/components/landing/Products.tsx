@@ -3,7 +3,7 @@ import { Heart, ArrowUpRight } from "lucide-react";
 import { products } from "@/lib/shop-data";
 
 export function Products() {
-  const featured = products.slice(0, 8);
+  const featured = products.slice(0, 6);
   return (
     <section className="bg-paper py-20 lg:py-32">
       <div className="max-w-[1600px] mx-auto px-5 lg:px-10">
@@ -17,7 +17,7 @@ export function Products() {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-14 lg:gap-x-8 lg:gap-y-20">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-16 lg:gap-x-10 lg:gap-y-24">
           {featured.map((p, i) => (
             <article key={p.id} className="group">
               <Link to="/products/$productId" params={{ productId: p.slug }} className="block">

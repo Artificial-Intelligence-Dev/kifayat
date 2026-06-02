@@ -7,7 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState, type ReactNode } from "react";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { PageTransition } from "@/components/motion/PageTransition";
 
@@ -104,7 +104,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   errorComponent: ErrorComponent,
 });
 
-function RootShell({ children }: { children: React.ReactNode }) {
+function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -140,7 +140,7 @@ function DeferredFlyToCart() {
     const idle = window.requestIdleCallback?.(load, { timeout: 1600 });
     const timer = window.setTimeout(load, 1800);
     return () => {
-      if (idle) window.cancelIdleCallback?.(idle);
+      if (idle !== undefined) window.cancelIdleCallback?.(idle);
       window.clearTimeout(timer);
     };
   }, []);

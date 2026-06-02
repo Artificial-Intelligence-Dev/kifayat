@@ -7,11 +7,13 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { SmoothScroll } from "@/components/motion/SmoothScroll";
-import { FlyToCart } from "@/components/motion/FlyToCart";
 import { PageTransition } from "@/components/motion/PageTransition";
 
 import appCss from "../styles.css?url";
+
+const FlyToCart = lazy(() => import("@/components/motion/FlyToCart").then((module) => ({ default: module.FlyToCart })));
 
 
 function NotFoundComponent() {
@@ -125,7 +127,28 @@ function RootComponent() {
       <PageTransition>
         <Outlet />
       </PageTransition>
-      <FlyToCart />
+      <DeferredFlyToCart />
     </QueryClientProvider>
+  );
+}
+
+function DeferredFlyToCart() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const load = () => setReady(true);
+    const idle = window.requestIdleCallback?.(load, { timeout: 1600 });
+    const timer = window.setTimeout(load, 1800);
+    return () => {
+      if (idle) window.cancelIdleCallback?.(idle);
+      window.clearTimeout(timer);
+    };
+  }, []);
+
+  if (!ready) return null;
+  return (
+    <Suspense fallback={null}>
+      <FlyToCart />
+    </Suspense>
   );
 }

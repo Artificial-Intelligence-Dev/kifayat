@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -71,6 +71,7 @@ export function Lightbox({
             key={index}
             src={images[index ?? 0]}
             alt=""
+            decoding="async"
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
@@ -84,46 +85,5 @@ export function Lightbox({
         </motion.div>
       )}
     </AnimatePresence>
-  );
-}
-
-export function ZoomImage({
-  src,
-  alt,
-  className = "",
-  onClick,
-}: {
-  src: string;
-  alt: string;
-  className?: string;
-  onClick?: () => void;
-}) {
-  const [hover, setHover] = useState(false);
-  const [pos, setPos] = useState({ x: 50, y: 50 });
-  return (
-    <div
-      className={`relative overflow-hidden cursor-zoom-in ${className}`}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      onMouseMove={(e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        setPos({
-          x: ((e.clientX - r.left) / r.width) * 100,
-          y: ((e.clientY - r.top) / r.height) * 100,
-        });
-      }}
-      onClick={onClick}
-    >
-      <img
-        src={src}
-        alt={alt}
-        style={{
-          transformOrigin: `${pos.x}% ${pos.y}%`,
-          transform: hover ? "scale(1.6)" : "scale(1)",
-          transition: "transform 0.45s cubic-bezier(0.22,1,0.36,1)",
-        }}
-        className="size-full object-cover will-change-transform"
-      />
-    </div>
   );
 }

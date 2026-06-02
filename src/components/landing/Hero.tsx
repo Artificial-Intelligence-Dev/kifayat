@@ -1,34 +1,38 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
+import { useMemo, useRef } from "react";
 import hero from "@/assets/editorial-hero.jpg";
 
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  const scale = useTransform(scrollYProgress, [0, 1], [1.05, 1.18]);
-  const titleY = useTransform(scrollYProgress, [0, 1], ["0%", "-25%"]);
-  const overlay = useTransform(scrollYProgress, [0, 1], [0.55, 0.9]);
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 26, mass: 0.2 });
+  const y = useTransform(smoothProgress, [0, 1], ["0%", "22%"]);
+  const scale = useTransform(smoothProgress, [0, 1], [1.03, 1.12]);
+  const titleY = useTransform(smoothProgress, [0, 1], ["0%", "-16%"]);
+  const overlay = useTransform(smoothProgress, [0, 1], [0.58, 0.82]);
 
   const headline = "Smart Shopping";
-  const words = headline.split(" ");
+  const words = useMemo(() => headline.split(" "), []);
 
   return (
     <section className="relative bg-coal text-bone">
       <div ref={ref} className="relative h-[92vh] min-h-[640px] lg:min-h-[820px] overflow-hidden">
-        <motion.div style={{ y, scale }} className="absolute inset-0 will-change-transform">
+        <motion.div style={reduceMotion ? undefined : { y, scale }} className="absolute inset-0 will-change-transform transform-gpu">
           <img
             src={hero}
             alt="Kifayat — Karachi editorial"
             width={1280}
             height={1600}
+            fetchPriority="high"
+            decoding="async"
             className="size-full object-cover object-center"
           />
         </motion.div>
         <motion.div
-          style={{ opacity: overlay }}
+          style={reduceMotion ? undefined : { opacity: overlay }}
           className="absolute inset-0 bg-gradient-to-b from-coal/30 via-coal/10 to-coal"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-coal/40 via-transparent to-transparent" />
@@ -48,7 +52,7 @@ export function Hero() {
 
         {/* main */}
         <motion.div
-          style={{ y: titleY }}
+          style={reduceMotion ? undefined : { y: titleY }}
           className="relative h-full max-w-[1600px] mx-auto px-5 lg:px-10 flex flex-col justify-end pb-16 lg:pb-24"
         >
           <div className="max-w-3xl">

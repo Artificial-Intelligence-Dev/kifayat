@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useRouterState } from "@tanstack/react-router";
 import { PageShell, PageHeader } from "@/components/landing/PageShell";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { categories, products } from "@/lib/shop-data";
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/products")({
       { name: "description", content: "Browse all products at Kifayat. Filter by category, price and rating." },
     ],
   }),
-  component: ProductsPage,
+  component: ProductsRoute,
 });
 
 const sorts = [
@@ -22,6 +22,12 @@ const sorts = [
   { id: "price-desc", label: "Price: high to low" },
   { id: "rating", label: "Top rated" },
 ];
+
+function ProductsRoute() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  if (pathname !== "/products") return <Outlet />;
+  return <ProductsPage />;
+}
 
 function ProductsPage() {
   const [selectedCats, setCats] = useState<string[]>([]);

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { consumePendingFlights, type FlyToCartDetail } from "./fly-to-cart-event";
 
 type Flight = {
   id: number;
@@ -11,8 +12,7 @@ type Flight = {
 export function FlyToCart() {
   const [flights, setFlights] = useState<Flight[]>([]);
   useEffect(() => {
-    const handler = (e: Event) => {
-      const d = (e as CustomEvent).detail as Omit<Flight, "id">;
+    const play = (d: FlyToCartDetail) => {
       const id = Date.now() + Math.random();
       setFlights((f) => [...f, { ...d, id }]);
       setTimeout(() => setFlights((f) => f.filter((x) => x.id !== id)), 1100);
@@ -28,6 +28,11 @@ export function FlyToCart() {
           { duration: 450, delay: 800, easing: "cubic-bezier(0.34,1.56,0.64,1)" },
         );
       }
+    };
+    consumePendingFlights().forEach(play);
+    const handler = (e: Event) => {
+      consumePendingFlights();
+      play((e as CustomEvent).detail as FlyToCartDetail);
     };
     window.addEventListener("kfy:fly", handler);
     return () => window.removeEventListener("kfy:fly", handler);

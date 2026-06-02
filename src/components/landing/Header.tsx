@@ -48,7 +48,7 @@ export function Header() {
             <Link to="/account" aria-label="Account" className="hidden sm:block p-1 hover:opacity-60 transition">
               <User className="size-5" strokeWidth={1.2} />
             </Link>
-            <Link to="/cart" aria-label="Cart" className="p-1 relative hover:opacity-60 transition">
+            <Link to="/cart" aria-label="Cart" data-cart-icon className="p-1 relative hover:opacity-60 transition">
               <ShoppingBag className="size-5" strokeWidth={1.2} />
               <span className="absolute -top-1 -right-1.5 size-4 rounded-full bg-coal text-bone text-[9px] font-semibold grid place-items-center">3</span>
             </Link>

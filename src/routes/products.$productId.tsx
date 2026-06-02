@@ -5,11 +5,13 @@ import {
   Heart, Minus, Plus, Star, Truck, RotateCcw, ShieldCheck,
   Check, Package, Sparkles, Lock, ArrowUpRight, MapPin, Expand,
 } from "lucide-react";
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { Lightbox, ZoomImage } from "@/components/shop/Lightbox";
+import { lazy, Suspense, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ZoomImage } from "@/components/shop/ZoomImage";
 import { Reveal } from "@/components/motion/Reveal";
-import { flyToCart } from "@/components/motion/FlyToCart";
+import { flyToCart } from "@/components/motion/fly-to-cart-event";
+
+const Lightbox = lazy(() => import("@/components/shop/Lightbox").then((module) => ({ default: module.Lightbox })));
 
 export const Route = createFileRoute("/products/$productId")({
   loader: ({ params }) => {
@@ -53,13 +55,14 @@ function ProductPage() {
   const { product } = Route.useLoaderData();
   const [qty, setQty] = useState(1);
   const [lightbox, setLightbox] = useState<number | null>(null);
-  const buyImgRef = useRef<HTMLImageElement>(null);
+  const buyAnchorRef = useRef<HTMLButtonElement>(null);
+  const reduceMotion = useReducedMotion();
   const pairings = products.filter((p) => p.id !== product.id).slice(0, 3);
   const savings = product.oldPrice ? product.oldPrice - product.price : 0;
   const images = product.images ?? [product.image, product.image, product.image, product.image];
 
   const handleAdd = () => {
-    if (buyImgRef.current) flyToCart(product.image, buyImgRef.current);
+    if (buyAnchorRef.current) flyToCart(product.image, buyAnchorRef.current);
   };
 
   return (
@@ -105,11 +108,11 @@ function ProductPage() {
             {images.map((img: string, i: number) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 40, scale: 0.98 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 32, scale: 0.985 }}
+                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-15% 0px" }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="relative bg-paper border border-coal/10 group"
+                className="relative bg-paper border border-coal/10 group transform-gpu"
               >
                 <ZoomImage
                   src={img}
@@ -138,7 +141,6 @@ function ProductPage() {
           <div className="lg:col-span-4 lg:sticky lg:top-24 self-start">
             <Reveal>
               <div className="bg-bone border border-coal/10 p-6 lg:p-8 flex flex-col">
-                <img ref={buyImgRef} src={product.image} alt="" className="hidden" />
                 <p className="eyebrow text-coal/50 mb-2">The Price</p>
                 <div className="flex items-baseline gap-3 mb-1">
                   <span className="font-display text-5xl lg:text-6xl">Rs {product.price.toLocaleString()}</span>
@@ -175,6 +177,7 @@ function ProductPage() {
                 </div>
 
                 <motion.button
+                  ref={buyAnchorRef}
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={handleAdd}
@@ -313,7 +316,11 @@ function ProductPage() {
         </div>
       </section>
 
-      <Lightbox images={images} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
+      {lightbox !== null && (
+        <Suspense fallback={null}>
+          <Lightbox images={images} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
+        </Suspense>
+      )}
     </PageShell>
   );
 }

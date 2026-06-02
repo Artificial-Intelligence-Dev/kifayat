@@ -9,7 +9,7 @@ import { lazy, Suspense, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { ZoomImage } from "@/components/shop/ZoomImage";
 import { Reveal } from "@/components/motion/Reveal";
-import { flyToCart } from "@/components/motion/FlyToCart";
+import { flyToCart } from "@/components/motion/fly-to-cart-event";
 
 const Lightbox = lazy(() => import("@/components/shop/Lightbox").then((module) => ({ default: module.Lightbox })));
 

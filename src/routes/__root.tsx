@@ -7,8 +7,12 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
+import { FlyToCart } from "@/components/motion/FlyToCart";
+import { PageTransition } from "@/components/motion/PageTransition";
 
 import appCss from "../styles.css?url";
+
 
 function NotFoundComponent() {
   return (
@@ -117,8 +121,11 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <SmoothScroll />
+      <PageTransition>
+        <Outlet />
+      </PageTransition>
+      <FlyToCart />
     </QueryClientProvider>
   );
 }

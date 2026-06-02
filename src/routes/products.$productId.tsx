@@ -6,7 +6,7 @@ import {
   Check, Package, Sparkles, Lock, ArrowUpRight, MapPin, Expand,
 } from "lucide-react";
 import { lazy, Suspense, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ZoomImage } from "@/components/shop/ZoomImage";
 import { Reveal } from "@/components/motion/Reveal";
 import { flyToCart } from "@/components/motion/fly-to-cart-event";
@@ -56,6 +56,7 @@ function ProductPage() {
   const [qty, setQty] = useState(1);
   const [lightbox, setLightbox] = useState<number | null>(null);
   const buyAnchorRef = useRef<HTMLButtonElement>(null);
+  const reduceMotion = useReducedMotion();
   const pairings = products.filter((p) => p.id !== product.id).slice(0, 3);
   const savings = product.oldPrice ? product.oldPrice - product.price : 0;
   const images = product.images ?? [product.image, product.image, product.image, product.image];
@@ -107,11 +108,11 @@ function ProductPage() {
             {images.map((img: string, i: number) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 40, scale: 0.98 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                initial={reduceMotion ? false : { opacity: 0, y: 32, scale: 0.985 }}
+                whileInView={reduceMotion ? undefined : { opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true, margin: "-15% 0px" }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="relative bg-paper border border-coal/10 group"
+                className="relative bg-paper border border-coal/10 group transform-gpu"
               >
                 <ZoomImage
                   src={img}

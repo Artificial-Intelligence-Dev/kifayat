@@ -82,7 +82,7 @@ function ProductPage() {
           <p className="eyebrow text-coal/50 mb-4">{product.brand} — A Considered Object</p>
         </Reveal>
         <h1 className="font-display text-5xl md:text-7xl lg:text-[8rem] leading-[0.92] tracking-tight max-w-5xl">
-          {product.name.split(" ").map((w, i, arr) => (
+          {product.name.split(" ").map((w: string, i: number, arr: string[]) => (
             <span key={i} className="inline-block overflow-hidden align-bottom mr-[0.18em]">
               <motion.span
                 className={`inline-block ${i === arr.length - 1 ? "italic text-brass" : ""}`}

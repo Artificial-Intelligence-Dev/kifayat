@@ -1,41 +1,117 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import hero from "@/assets/editorial-hero.jpg";
 
 export function Hero() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1.05, 1.18]);
+  const titleY = useTransform(scrollYProgress, [0, 1], ["0%", "-25%"]);
+  const overlay = useTransform(scrollYProgress, [0, 1], [0.55, 0.9]);
+
+  const headline = "Smart Shopping";
+  const words = headline.split(" ");
+
   return (
     <section className="relative bg-coal text-bone">
-      <div className="relative h-[88vh] min-h-[600px] lg:min-h-[760px] overflow-hidden">
-        <img
-          src={hero}
-          alt="Kifayat — Karachi editorial"
-          width={1280}
-          height={1600}
-          className="absolute inset-0 size-full object-cover object-center scale-105"
+      <div ref={ref} className="relative h-[92vh] min-h-[640px] lg:min-h-[820px] overflow-hidden">
+        <motion.div style={{ y, scale }} className="absolute inset-0 will-change-transform">
+          <img
+            src={hero}
+            alt="Kifayat — Karachi editorial"
+            width={1280}
+            height={1600}
+            className="size-full object-cover object-center"
+          />
+        </motion.div>
+        <motion.div
+          style={{ opacity: overlay }}
+          className="absolute inset-0 bg-gradient-to-b from-coal/30 via-coal/10 to-coal"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-coal/30 via-coal/10 to-coal/85" />
         <div className="absolute inset-0 bg-gradient-to-r from-coal/40 via-transparent to-transparent" />
 
         {/* top eyebrow */}
-        <div className="absolute top-0 inset-x-0 p-5 lg:p-10 flex items-center justify-between eyebrow text-bone/70">
-          <span className="flex items-center gap-3"><span className="h-px w-8 bg-bone/40" /> Volume 03 · Autumn Edit</span>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="absolute top-0 inset-x-0 p-5 lg:p-10 flex items-center justify-between eyebrow text-bone/70"
+        >
+          <span className="flex items-center gap-3">
+            <span className="h-px w-8 bg-bone/40" /> Volume 03 · Autumn Edit
+          </span>
           <span className="hidden sm:inline">Karachi · 24.86° N</span>
-        </div>
+        </motion.div>
 
         {/* main */}
-        <div className="relative h-full max-w-[1600px] mx-auto px-5 lg:px-10 flex flex-col justify-end pb-16 lg:pb-24">
-          <div className="max-w-3xl animate-fade-up">
-            <p className="eyebrow text-bone/70 mb-5 flex items-center gap-3">
+        <motion.div
+          style={{ y: titleY }}
+          className="relative h-full max-w-[1600px] mx-auto px-5 lg:px-10 flex flex-col justify-end pb-16 lg:pb-24"
+        >
+          <div className="max-w-3xl">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
+              className="eyebrow text-bone/70 mb-5 flex items-center gap-3"
+            >
               <span className="h-px w-8 bg-bone/40" /> Season 01 — Edition
-            </p>
+            </motion.p>
             <h1 className="font-display italic text-6xl sm:text-8xl lg:text-[10rem] leading-[0.85] tracking-tight">
-              Smart Shopping<br />
-              <span className="not-italic">for</span> Karachi
+              <span className="block">
+                {words.map((w, i) => (
+                  <span key={i} className="inline-block overflow-hidden align-bottom mr-[0.18em]">
+                    <motion.span
+                      className="inline-block"
+                      initial={{ y: "115%" }}
+                      animate={{ y: "0%" }}
+                      transition={{ duration: 1.05, delay: 0.35 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {w}
+                    </motion.span>
+                  </span>
+                ))}
+              </span>
+              <span className="block">
+                <span className="inline-block overflow-hidden align-bottom mr-[0.18em]">
+                  <motion.span
+                    className="inline-block not-italic"
+                    initial={{ y: "115%" }}
+                    animate={{ y: "0%" }}
+                    transition={{ duration: 1.05, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    for
+                  </motion.span>
+                </span>
+                <span className="inline-block overflow-hidden align-bottom">
+                  <motion.span
+                    className="inline-block"
+                    initial={{ y: "115%" }}
+                    animate={{ y: "0%" }}
+                    transition={{ duration: 1.05, delay: 0.82, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    Karachi
+                  </motion.span>
+                </span>
+              </span>
             </h1>
-            <p className="mt-8 max-w-md text-bone/75 text-sm lg:text-base leading-relaxed">
+            <motion.p
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.05 }}
+              className="mt-8 max-w-md text-bone/75 text-sm lg:text-base leading-relaxed"
+            >
               A curated marketplace of considered objects — electronics, fashion, beauty and home — delivered with the precision Karachi deserves.
-            </p>
-            <div className="mt-10 flex flex-wrap gap-3">
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 14 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.2 }}
+              className="mt-10 flex flex-wrap gap-3"
+            >
               <Link to="/products" className="group inline-flex items-center gap-3 bg-bone text-coal px-7 py-4 eyebrow hover:bg-bone/90 transition">
                 Shop the edit
                 <ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" strokeWidth={1.5} />
@@ -43,15 +119,35 @@ export function Hero() {
               <Link to="/products" className="inline-flex items-center gap-2 border border-bone/30 backdrop-blur-sm px-7 py-4 eyebrow hover:bg-bone/10 transition">
                 Browse all
               </Link>
-            </div>
+            </motion.div>
           </div>
 
           {/* corner stats */}
-          <div className="absolute right-5 lg:right-10 bottom-16 lg:bottom-24 hidden md:flex flex-col items-end text-right">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 1.3 }}
+            className="absolute right-5 lg:right-10 bottom-16 lg:bottom-24 hidden md:flex flex-col items-end text-right"
+          >
             <p className="font-display italic text-6xl lg:text-7xl leading-none">12k+</p>
             <p className="eyebrow text-bone/60 mt-3">Karachi shoppers<br/>this month</p>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
+
+        {/* scroll cue */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5, duration: 0.8 }}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 eyebrow text-bone/60 flex flex-col items-center gap-2"
+        >
+          <span>Scroll</span>
+          <motion.span
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+            className="h-8 w-px bg-bone/40"
+          />
+        </motion.div>
       </div>
 
       {/* marquee */}

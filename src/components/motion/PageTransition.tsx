@@ -9,13 +9,13 @@ export function PageTransition({ children }: { children: ReactNode }) {
   if (reduceMotion) return <>{children}</>;
 
   return (
-    <LazyMotion features={domAnimation} strict>
+    <LazyMotion features={domAnimation}>
       <m.div
         key={pathname}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -4 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
       >
         {children}
       </m.div>
@@ -27,7 +27,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
         initial={{ scaleY: 1 }}
         animate={{ scaleY: 0 }}
         exit={{ scaleY: 0 }}
-        transition={{ duration: 1.15, ease: [0.76, 0, 0.24, 1] }}
+        transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1] }}
         style={{ height: "55vh" }}
       />
       <m.div
@@ -36,7 +36,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
         initial={{ scaleY: 1 }}
         animate={{ scaleY: 0 }}
         exit={{ scaleY: 0 }}
-        transition={{ duration: 1.15, ease: [0.76, 0, 0.24, 1], delay: 0.06 }}
+        transition={{ duration: 1.35, ease: [0.76, 0, 0.24, 1], delay: 0.08 }}
         style={{ height: "55vh" }}
       />
       <m.div
@@ -45,7 +45,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
         initial={{ opacity: 1 }}
         animate={{ opacity: 0 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.9, ease: "easeOut", delay: 0.18 }}
+        transition={{ duration: 1.05, ease: "easeOut", delay: 0.24 }}
       >
         <m.span
           initial={{ y: 16, opacity: 0 }}

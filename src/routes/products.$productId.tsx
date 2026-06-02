@@ -5,11 +5,13 @@ import {
   Heart, Minus, Plus, Star, Truck, RotateCcw, ShieldCheck,
   Check, Package, Sparkles, Lock, ArrowUpRight, MapPin, Expand,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { lazy, Suspense, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Lightbox, ZoomImage } from "@/components/shop/Lightbox";
+import { ZoomImage } from "@/components/shop/ZoomImage";
 import { Reveal } from "@/components/motion/Reveal";
 import { flyToCart } from "@/components/motion/FlyToCart";
+
+const Lightbox = lazy(() => import("@/components/shop/Lightbox").then((module) => ({ default: module.Lightbox })));
 
 export const Route = createFileRoute("/products/$productId")({
   loader: ({ params }) => {
@@ -313,7 +315,11 @@ function ProductPage() {
         </div>
       </section>
 
-      <Lightbox images={images} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
+      {lightbox !== null && (
+        <Suspense fallback={null}>
+          <Lightbox images={images} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />
+        </Suspense>
+      )}
     </PageShell>
   );
 }

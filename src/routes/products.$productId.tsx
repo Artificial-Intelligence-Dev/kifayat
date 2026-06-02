@@ -55,13 +55,13 @@ function ProductPage() {
   const { product } = Route.useLoaderData();
   const [qty, setQty] = useState(1);
   const [lightbox, setLightbox] = useState<number | null>(null);
-  const buyImgRef = useRef<HTMLImageElement>(null);
+  const buyAnchorRef = useRef<HTMLButtonElement>(null);
   const pairings = products.filter((p) => p.id !== product.id).slice(0, 3);
   const savings = product.oldPrice ? product.oldPrice - product.price : 0;
   const images = product.images ?? [product.image, product.image, product.image, product.image];
 
   const handleAdd = () => {
-    if (buyImgRef.current) flyToCart(product.image, buyImgRef.current);
+    if (buyAnchorRef.current) flyToCart(product.image, buyAnchorRef.current);
   };
 
   return (
@@ -140,7 +140,6 @@ function ProductPage() {
           <div className="lg:col-span-4 lg:sticky lg:top-24 self-start">
             <Reveal>
               <div className="bg-bone border border-coal/10 p-6 lg:p-8 flex flex-col">
-                <img ref={buyImgRef} src={product.image} alt="" className="hidden" />
                 <p className="eyebrow text-coal/50 mb-2">The Price</p>
                 <div className="flex items-baseline gap-3 mb-1">
                   <span className="font-display text-5xl lg:text-6xl">Rs {product.price.toLocaleString()}</span>
@@ -177,6 +176,7 @@ function ProductPage() {
                 </div>
 
                 <motion.button
+                  ref={buyAnchorRef}
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={handleAdd}

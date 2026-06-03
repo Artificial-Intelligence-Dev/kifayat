@@ -1,13 +1,29 @@
+import { lazy, Suspense } from "react";
+import { motion } from "framer-motion";
 import { Header } from "@/components/landing/Header";
 import { Footer } from "@/components/landing/Footer";
 import { MobileNav } from "@/components/landing/MobileNav";
+import { SideDrawer } from "@/components/landing/SideDrawer";
+import { useDrawerOpen } from "@/lib/ui-store";
+
+const BlendCursor = lazy(() => import("@/components/landing/BlendCursor").then((m) => ({ default: m.BlendCursor })));
 
 export function PageShell({ children }: { children: React.ReactNode }) {
+  const open = useDrawerOpen();
+
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <Header />
-      <main className="flex-1 pb-20 md:pb-0">{children}</main>
-      <Footer />
+    <div className="min-h-screen bg-background flex flex-col overflow-x-clip">
+      <SideDrawer />
+      <Suspense fallback={null}><BlendCursor /></Suspense>
+      <motion.div
+        animate={{ x: open ? "min(420px, 70vw)" : 0, scale: open ? 0.985 : 1 }}
+        transition={{ duration: 0.75, ease: [0.76, 0, 0.24, 1] }}
+        className="flex flex-col flex-1 will-change-transform origin-left"
+      >
+        <Header />
+        <main className="flex-1 pb-20 md:pb-0">{children}</main>
+        <Footer />
+      </motion.div>
       <MobileNav />
     </div>
   );

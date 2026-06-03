@@ -126,7 +126,7 @@ function Checkout() {
 
               <div className="mt-8 pt-6 border-t border-coal/15 space-y-3">
                 <Reassure Icon={ShieldCheck} text="Verified merchants only" />
-                <Reassure Icon={Truck} text="2–4 business days · Karachi" />
+                <Reassure Icon={Truck} text="2–5 business days · Pakistan-wide" />
                 <Reassure Icon={Package} text="7-day no-question returns" />
                 <Reassure Icon={Lock} text="256-bit encrypted payment" />
               </div>

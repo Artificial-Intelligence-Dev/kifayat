@@ -1,6 +1,6 @@
 const values = [
   { n: "01", t: "Curated, not crowded", d: "Every item earns its place. We&rsquo;d rather show you one perfect piece than fifty mediocre ones." },
-  { n: "02", t: "Karachi-speed delivery", d: "Same-day across most of the city. Standard 2-day everywhere else in Pakistan." },
+  { n: "02", t: "Pakistan-wide dispatch", d: "Same-day across Karachi metro. 2–5 working days to every other city in the country." },
   { n: "03", t: "Honest pricing, always", d: "No inflated MRPs. No fake discounts. The price you see is the fairest one we could find." },
   { n: "04", t: "7-day no-questions returns", d: "Change of heart? Pick-up from your door, refund in 48 hours. Zero friction." },
 ];

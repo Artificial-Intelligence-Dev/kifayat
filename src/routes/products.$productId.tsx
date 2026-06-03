@@ -195,7 +195,7 @@ function ProductPage() {
                 </motion.button>
 
                 <div className="mt-6 pt-6 border-t border-coal/10 grid grid-cols-3 gap-3 text-[10px] eyebrow text-coal/60">
-                  <div className="flex flex-col items-start gap-1"><Truck className="size-4 text-coal" strokeWidth={1.4}/>Karachi-speed</div>
+                  <div className="flex flex-col items-start gap-1"><Truck className="size-4 text-coal" strokeWidth={1.4}/>Pakistan-wide</div>
                   <div className="flex flex-col items-start gap-1"><RotateCcw className="size-4 text-coal" strokeWidth={1.4}/>14-day returns</div>
                   <div className="flex flex-col items-start gap-1"><ShieldCheck className="size-4 text-coal" strokeWidth={1.4}/>Authenticated</div>
                 </div>
@@ -231,7 +231,7 @@ function ProductPage() {
             <Package className="size-6 text-brass" strokeWidth={1.3} />
             <div>
               <p className="font-display text-2xl">Free delivery</p>
-              <p className="text-xs text-coal/55 mt-1">On orders above Rs 2,500 across Karachi.</p>
+              <p className="text-xs text-coal/55 mt-1">On orders above Rs 2,500 — anywhere in Pakistan.</p>
             </div>
           </Cell>
           <Cell delay={0.05} className="col-span-6 lg:col-span-3 flex flex-col justify-between min-h-[180px]">
@@ -267,7 +267,7 @@ function ProductPage() {
           </Cell>
           <Cell delay={0.1} className="col-span-6 lg:col-span-4 bg-paper flex flex-col gap-3">
             <p className="eyebrow text-coal/50">Shipping window</p>
-            <div className="flex items-center gap-2 text-sm"><MapPin className="size-4 text-brass" strokeWidth={1.4}/> Karachi metro · 1–2 days</div>
+            <div className="flex items-center gap-2 text-sm"><MapPin className="size-4 text-brass" strokeWidth={1.4}/> Karachi metro · 1–2 days · same-day available</div>
             <div className="flex items-center gap-2 text-sm"><Truck className="size-4 text-brass" strokeWidth={1.4}/> Pakistan-wide · 3–5 days</div>
             <div className="flex items-center gap-2 text-sm"><RotateCcw className="size-4 text-brass" strokeWidth={1.4}/> Return within 14 days</div>
           </Cell>

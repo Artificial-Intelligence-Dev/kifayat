@@ -13,7 +13,7 @@ export function Products() {
             <h2 className="font-display italic text-5xl lg:text-8xl leading-[0.9]">Trending<br/>Now.</h2>
           </div>
           <p className="max-w-md text-coal/70 leading-relaxed lg:text-lg lg:justify-self-end">
-            Eight pieces chosen this week — selected for craft, value, and the way they fit into everyday Karachi life.
+            Eight pieces chosen this week — selected for craft, value, and the way they fit into everyday life across Pakistan.
           </p>
         </div>
 

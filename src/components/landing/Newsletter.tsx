@@ -7,7 +7,7 @@ export function Newsletter() {
           The Kifayat List.
         </h2>
         <p className="mt-8 max-w-md mx-auto text-coal/60 text-sm lg:text-base leading-relaxed">
-          A weekly briefing on style, tech and Karachi essentials — plus first access to drops before they go public.
+          A weekly briefing on style, tech and everyday essentials — plus first access to drops, dispatched Pakistan-wide before they go public.
         </p>
 
         <form className="mt-14 max-w-lg mx-auto relative">

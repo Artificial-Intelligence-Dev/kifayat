@@ -12,7 +12,7 @@ export const Route = createFileRoute("/category/$slug")({
   head: ({ loaderData }) => ({
     meta: loaderData ? [
       { title: `${loaderData.cat.name} — Kifayat` },
-      { name: "description", content: `Shop ${loaderData.cat.name} at Kifayat — curated picks at honest prices, delivered in Karachi.` },
+      { name: "description", content: `Shop ${loaderData.cat.name} at Kifayat — curated picks at honest prices, dispatched anywhere in Pakistan.` },
     ] : [],
   }),
   component: CategoryPage,

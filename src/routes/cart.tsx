@@ -8,7 +8,7 @@ import {
 import { useMemo, useState } from "react";
 
 export const Route = createFileRoute("/cart")({
-  head: () => ({ meta: [{ title: "The Bag — Kifayat" }, { name: "description", content: "Your considered selection from Kifayat — Karachi's editorial marketplace." }] }),
+  head: () => ({ meta: [{ title: "The Bag — Kifayat" }, { name: "description", content: "Your considered selection from Kifayat — Pakistan's editorial marketplace." }] }),
   component: CartPage,
 });
 
@@ -185,7 +185,7 @@ function CartPage() {
               </div>
               <div className="lg:col-span-8 grid sm:grid-cols-2 gap-px bg-coal/10">
                 {[
-                  { n: "01", t: "Authenticated", d: "Every object verified at our Karachi warehouse before dispatch — no counterfeits, ever." },
+                  { n: "01", t: "Authenticated", d: "Every object verified at our Karachi studio, then dispatched anywhere in Pakistan — no counterfeits, ever." },
                   { n: "02", t: "Honest pricing", d: "No phantom MRPs. The price you see is the price the market should pay." },
                   { n: "03", t: "Tracked dispatch", d: "Real-time updates from our hub to your door, with named couriers — not strangers." },
                   { n: "04", t: "Effortless returns", d: "Seven days, no questions, no restocking fee. Pickup arranged from your address." },

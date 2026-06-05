@@ -1,7 +1,5 @@
-import { createFileRoute, Link, redirect } from "@tanstack/react-router";
-import { Outlet } from "@tanstack/react-router";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { useEffect, useState } from "react";
 import { PageShell } from "@/components/landing/PageShell";
 
 export const Route = createFileRoute("/_authenticated")({

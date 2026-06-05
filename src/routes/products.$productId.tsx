@@ -64,6 +64,16 @@ function ProductPage() {
   const images = product.images ?? [product.image, product.image, product.image, product.image];
 
   const handleAdd = () => {
+    cart.add({
+      product_id: null,
+      slug: product.slug,
+      name: product.name,
+      brand: product.brand,
+      price: product.price,
+      image: product.image,
+      qty,
+    });
+    toast.success(`Added ${qty} × ${product.name} to bag.`);
     if (buyAnchorRef.current) flyToCart(product.image, buyAnchorRef.current);
   };
 

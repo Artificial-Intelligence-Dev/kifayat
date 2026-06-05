@@ -39,6 +39,7 @@ import { Route as AccountAddressesRouteImport } from './routes/account.addresses
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AccountOrdersOrderIdRouteImport } from './routes/account.orders.$orderId'
+import { Route as AuthenticatedAdminProductsRouteImport } from './routes/_authenticated/admin.products'
 import { Route as AuthenticatedAdminOrdersRouteImport } from './routes/_authenticated/admin.orders'
 
 const TermsRoute = TermsRouteImport.update({
@@ -190,6 +191,12 @@ const AccountOrdersOrderIdRoute = AccountOrdersOrderIdRouteImport.update({
   path: '/$orderId',
   getParentRoute: () => AccountOrdersRoute,
 } as any)
+const AuthenticatedAdminProductsRoute =
+  AuthenticatedAdminProductsRouteImport.update({
+    id: '/products',
+    path: '/products',
+    getParentRoute: () => AuthenticatedAdminRoute,
+  } as any)
 const AuthenticatedAdminOrdersRoute =
   AuthenticatedAdminOrdersRouteImport.update({
     id: '/orders',
@@ -226,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/category/$slug': typeof CategorySlugRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/admin/orders': typeof AuthenticatedAdminOrdersRoute
+  '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/account/orders/$orderId': typeof AccountOrdersOrderIdRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -257,6 +265,7 @@ export interface FileRoutesByTo {
   '/category/$slug': typeof CategorySlugRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/admin/orders': typeof AuthenticatedAdminOrdersRoute
+  '/admin/products': typeof AuthenticatedAdminProductsRoute
   '/account/orders/$orderId': typeof AccountOrdersOrderIdRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
 }
@@ -291,6 +300,7 @@ export interface FileRoutesById {
   '/category/$slug': typeof CategorySlugRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/_authenticated/admin/orders': typeof AuthenticatedAdminOrdersRoute
+  '/_authenticated/admin/products': typeof AuthenticatedAdminProductsRoute
   '/account/orders/$orderId': typeof AccountOrdersOrderIdRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
@@ -325,6 +335,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/products/$productId'
     | '/admin/orders'
+    | '/admin/products'
     | '/account/orders/$orderId'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
@@ -356,6 +367,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/products/$productId'
     | '/admin/orders'
+    | '/admin/products'
     | '/account/orders/$orderId'
     | '/admin'
   id:
@@ -389,6 +401,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/products/$productId'
     | '/_authenticated/admin/orders'
+    | '/_authenticated/admin/products'
     | '/account/orders/$orderId'
     | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
@@ -628,6 +641,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountOrdersOrderIdRouteImport
       parentRoute: typeof AccountOrdersRoute
     }
+    '/_authenticated/admin/products': {
+      id: '/_authenticated/admin/products'
+      path: '/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AuthenticatedAdminProductsRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/_authenticated/admin/orders': {
       id: '/_authenticated/admin/orders'
       path: '/orders'
@@ -640,11 +660,13 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedAdminRouteChildren {
   AuthenticatedAdminOrdersRoute: typeof AuthenticatedAdminOrdersRoute
+  AuthenticatedAdminProductsRoute: typeof AuthenticatedAdminProductsRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
 }
 
 const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
   AuthenticatedAdminOrdersRoute: AuthenticatedAdminOrdersRoute,
+  AuthenticatedAdminProductsRoute: AuthenticatedAdminProductsRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
 }
 

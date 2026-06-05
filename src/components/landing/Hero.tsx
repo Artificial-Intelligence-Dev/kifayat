@@ -35,7 +35,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="col-span-5 lg:col-span-4 aspect-[3/4] lg:aspect-[3/4] bg-paper overflow-hidden relative self-end img-bone-grade"
+            className="col-span-5 lg:col-span-3 aspect-[3/4] lg:aspect-[3/4] bg-paper overflow-hidden relative self-end img-bone-grade"
             data-cursor="view"
           >
             <motion.img
@@ -52,10 +52,10 @@ export function Hero() {
           {/* CENTER TYPE BRIDGE */}
           <motion.div
             style={reduce ? undefined : { y: titleY, scale: titleScale }}
-            className="col-span-12 lg:col-span-4 order-first lg:order-none text-center will-change-transform"
+            className="col-span-12 lg:col-span-6 order-first lg:order-none text-center will-change-transform relative z-10 px-2"
           >
             <p className="eyebrow text-coal/50 mb-6 lg:mb-10">Season 01 — Edition</p>
-            <h1 className="font-display italic text-[18vw] lg:text-[11vw] leading-[0.82] tracking-tight">
+            <h1 className="font-display italic text-[14vw] sm:text-[11vw] lg:text-[7vw] xl:text-[6.4vw] leading-[0.88] tracking-tight">
               {words.map((w, i) => (
                 <span key={i} className="block overflow-hidden">
                   <motion.span
@@ -101,7 +101,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="col-span-7 lg:col-span-4 aspect-[3/4] lg:aspect-[3/4.4] bg-paper overflow-hidden relative self-start lg:-mt-6 img-bone-grade"
+            className="col-span-7 lg:col-span-3 aspect-[3/4] lg:aspect-[3/4.4] bg-paper overflow-hidden relative self-start lg:-mt-6 img-bone-grade"
             data-cursor="view"
           >
             <motion.img

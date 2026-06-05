@@ -52,10 +52,10 @@ export function Hero() {
           {/* CENTER TYPE BRIDGE */}
           <motion.div
             style={reduce ? undefined : { y: titleY, scale: titleScale }}
-            className="col-span-12 lg:col-span-4 order-first lg:order-none text-center will-change-transform"
+            className="col-span-12 lg:col-span-4 order-first lg:order-none text-center will-change-transform relative z-10"
           >
             <p className="eyebrow text-coal/50 mb-6 lg:mb-10">Season 01 — Edition</p>
-            <h1 className="font-display italic text-[18vw] lg:text-[11vw] leading-[0.82] tracking-tight">
+            <h1 className="font-display italic text-[15vw] sm:text-[12vw] lg:text-[7.5vw] xl:text-[7vw] leading-[0.85] tracking-tight break-words">
               {words.map((w, i) => (
                 <span key={i} className="block overflow-hidden">
                   <motion.span

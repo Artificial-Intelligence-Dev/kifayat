@@ -1,8 +1,17 @@
 import { Link } from "@tanstack/react-router";
 import { Heart, ArrowUpRight } from "lucide-react";
-import type { Product } from "@/lib/shop-data";
 
-export function ProductCard({ p, index }: { p: Product; index?: number }) {
+export type CardProduct = {
+  slug: string;
+  name: string;
+  brand?: string | null;
+  price: number;
+  oldPrice?: number | null;
+  image: string;
+  badge?: string | null;
+};
+
+export function ProductCard({ p, index }: { p: CardProduct; index?: number }) {
   return (
     <article className="group relative">
       <Link

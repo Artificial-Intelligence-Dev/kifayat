@@ -101,7 +101,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
-            className="col-span-7 lg:col-span-4 aspect-[3/4] lg:aspect-[3/4.4] bg-paper overflow-hidden relative self-start lg:-mt-6 img-bone-grade"
+            className="col-span-7 lg:col-span-3 aspect-[3/4] lg:aspect-[3/4.4] bg-paper overflow-hidden relative self-start lg:-mt-6 img-bone-grade"
             data-cursor="view"
           >
             <motion.img

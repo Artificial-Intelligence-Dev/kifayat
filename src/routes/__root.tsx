@@ -12,6 +12,7 @@ import { SmoothScroll } from "@/components/motion/SmoothScroll";
 import { PageTransition } from "@/components/motion/PageTransition";
 
 import appCss from "../styles.css?url";
+import { Toaster } from "@/components/ui/sonner";
 
 const FlyToCart = lazy(() => import("@/components/motion/FlyToCart").then((module) => ({ default: module.FlyToCart })));
 
@@ -128,6 +129,7 @@ function RootComponent() {
         <Outlet />
       </PageTransition>
       <DeferredFlyToCart />
+      <Toaster position="bottom-right" richColors />
     </QueryClientProvider>
   );
 }

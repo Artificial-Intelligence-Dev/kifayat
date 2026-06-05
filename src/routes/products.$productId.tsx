@@ -10,6 +10,8 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ZoomImage } from "@/components/shop/ZoomImage";
 import { Reveal } from "@/components/motion/Reveal";
 import { flyToCart } from "@/components/motion/fly-to-cart-event";
+import { cart } from "@/lib/cart-store";
+import { toast } from "sonner";
 
 const Lightbox = lazy(() => import("@/components/shop/Lightbox").then((module) => ({ default: module.Lightbox })));
 

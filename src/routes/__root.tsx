@@ -129,6 +129,7 @@ function RootComponent() {
         <Outlet />
       </PageTransition>
       <DeferredFlyToCart />
+      <Toaster position="bottom-right" richColors />
     </QueryClientProvider>
   );
 }

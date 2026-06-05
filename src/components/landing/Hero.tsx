@@ -35,7 +35,7 @@ export function Hero() {
             initial={reduce ? false : { opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-            className="col-span-5 lg:col-span-4 aspect-[3/4] lg:aspect-[3/4] bg-paper overflow-hidden relative self-end img-bone-grade"
+            className="col-span-5 lg:col-span-3 aspect-[3/4] lg:aspect-[3/4] bg-paper overflow-hidden relative self-end img-bone-grade"
             data-cursor="view"
           >
             <motion.img

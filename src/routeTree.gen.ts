@@ -37,6 +37,7 @@ import { Route as AccountPaymentMethodsRouteImport } from './routes/account.paym
 import { Route as AccountOrdersRouteImport } from './routes/account.orders'
 import { Route as AccountAddressesRouteImport } from './routes/account.addresses'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
 import { Route as AccountOrdersOrderIdRouteImport } from './routes/account.orders.$orderId'
 
 const TermsRoute = TermsRouteImport.update({
@@ -178,6 +179,11 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedAdminRoute,
+} as any)
 const AccountOrdersOrderIdRoute = AccountOrdersOrderIdRouteImport.update({
   id: '/$orderId',
   path: '/$orderId',
@@ -203,7 +209,7 @@ export interface FileRoutesByFullPath {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
-  '/admin': typeof AuthenticatedAdminRoute
+  '/admin': typeof AuthenticatedAdminRouteWithChildren
   '/account/addresses': typeof AccountAddressesRoute
   '/account/orders': typeof AccountOrdersRouteWithChildren
   '/account/payment-methods': typeof AccountPaymentMethodsRoute
@@ -213,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/category/$slug': typeof CategorySlugRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/account/orders/$orderId': typeof AccountOrdersOrderIdRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -233,7 +240,6 @@ export interface FileRoutesByTo {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
-  '/admin': typeof AuthenticatedAdminRoute
   '/account/addresses': typeof AccountAddressesRoute
   '/account/orders': typeof AccountOrdersRouteWithChildren
   '/account/payment-methods': typeof AccountPaymentMethodsRoute
@@ -243,6 +249,7 @@ export interface FileRoutesByTo {
   '/category/$slug': typeof CategorySlugRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/account/orders/$orderId': typeof AccountOrdersOrderIdRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -265,7 +272,7 @@ export interface FileRoutesById {
   '/shipping-policy': typeof ShippingPolicyRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/terms': typeof TermsRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
   '/account/addresses': typeof AccountAddressesRoute
   '/account/orders': typeof AccountOrdersRouteWithChildren
   '/account/payment-methods': typeof AccountPaymentMethodsRoute
@@ -275,6 +282,7 @@ export interface FileRoutesById {
   '/category/$slug': typeof CategorySlugRoute
   '/products/$productId': typeof ProductsProductIdRoute
   '/account/orders/$orderId': typeof AccountOrdersOrderIdRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -307,6 +315,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/products/$productId'
     | '/account/orders/$orderId'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -327,7 +336,6 @@ export interface FileRouteTypes {
     | '/shipping-policy'
     | '/sitemap.xml'
     | '/terms'
-    | '/admin'
     | '/account/addresses'
     | '/account/orders'
     | '/account/payment-methods'
@@ -337,6 +345,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/products/$productId'
     | '/account/orders/$orderId'
+    | '/admin'
   id:
     | '__root__'
     | '/'
@@ -368,6 +377,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/products/$productId'
     | '/account/orders/$orderId'
+    | '/_authenticated/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -591,6 +601,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedAdminRoute
+    }
     '/account/orders/$orderId': {
       id: '/account/orders/$orderId'
       path: '/$orderId'
@@ -601,12 +618,23 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedAdminRouteChildren {
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+}
+
+const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+}
+
+const AuthenticatedAdminRouteWithChildren =
+  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =

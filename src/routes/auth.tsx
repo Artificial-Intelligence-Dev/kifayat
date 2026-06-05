@@ -179,7 +179,7 @@ function FormField({
   icon: React.ReactNode;
   value: string;
   onChange: (v: string) => void;
-} & React.InputHTMLAttributes<HTMLInputElement>) {
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange">) {
   return (
     <label className="block">
       <span className="eyebrow text-muted-foreground mb-2 block">{label}</span>

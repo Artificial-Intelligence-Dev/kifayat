@@ -66,10 +66,8 @@ export const cart = {
 };
 
 export function useCart() {
-  const [s, setS] = useState<CartItem[]>(() => {
-    load();
-    return items;
-  });
+  // Start empty on both server and first client render to avoid hydration mismatch.
+  const [s, setS] = useState<CartItem[]>([]);
   useEffect(() => {
     load();
     setS(items);

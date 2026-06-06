@@ -211,3 +211,33 @@ export const getMyOrder = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     return order;
   });
+
+// ─────────── Profile (authenticated) ───────────
+
+export const getMyProfile = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data, error } = await context.supabase
+      .from("profiles")
+      .select("id, full_name, phone, created_at")
+      .eq("id", context.userId)
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    return { profile: data, email: (context.claims as any).email ?? null };
+  });
+
+export const updateMyProfile = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input: unknown) =>
+    z.object({
+      full_name: z.string().trim().min(1).max(120),
+      phone: z.string().trim().max(30).optional().nullable(),
+    }).parse(input)
+  )
+  .handler(async ({ data, context }) => {
+    const { error } = await context.supabase
+      .from("profiles")
+      .upsert({ id: context.userId, full_name: data.full_name, phone: data.phone ?? null });
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });

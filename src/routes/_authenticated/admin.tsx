@@ -69,8 +69,10 @@ function AdminLayout() {
           <h1 className="font-display italic text-5xl lg:text-7xl leading-[0.9]">The Ledger<span className="text-brass">.</span></h1>
         </div>
         <nav className="flex flex-wrap gap-x-6 gap-y-2 eyebrow">
+          <Link to="/admin" activeOptions={{ exact: true }} activeProps={{ className: "text-brass" }} className="link-draw hover:text-brass transition">Dashboard</Link>
           <Link to="/admin/orders" activeProps={{ className: "text-brass" }} className="link-draw hover:text-brass transition">Orders</Link>
           <Link to="/admin/products" activeProps={{ className: "text-brass" }} className="link-draw hover:text-brass transition">Products</Link>
+          <Link to="/admin/reviews" activeProps={{ className: "text-brass" }} className="link-draw hover:text-brass transition">Reviews</Link>
         </nav>
       </header>
       <Outlet />

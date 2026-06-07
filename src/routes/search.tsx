@@ -65,7 +65,7 @@ function SearchPage() {
   });
 
   const updateSearch = (next: Partial<typeof search>) => {
-    navigate({ to: "/search", search: (prev) => ({ ...prev, ...next, page: next.page ?? 1 }) });
+    navigate({ to: "/search", search: (prev: any) => ({ ...prev, ...next, page: next.page ?? 1 }) });
   };
 
   const submit = (e: React.FormEvent) => {

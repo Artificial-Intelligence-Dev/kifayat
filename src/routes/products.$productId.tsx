@@ -5,13 +5,20 @@ import {
   Heart, Minus, Plus, Star, Truck, RotateCcw, ShieldCheck,
   Check, Package, Sparkles, Lock, ArrowUpRight, MapPin, Expand,
 } from "lucide-react";
-import { lazy, Suspense, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ZoomImage } from "@/components/shop/ZoomImage";
 import { Reveal } from "@/components/motion/Reveal";
 import { flyToCart } from "@/components/motion/fly-to-cart-event";
 import { cart } from "@/lib/cart-store";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getProductBySlug } from "@/lib/shop.functions";
+import { recordRecentlyViewed } from "@/lib/account.functions";
+import { useAuth } from "@/lib/auth-store";
+import { ReviewsSection, QASection } from "@/components/shop/ReviewsAndQA";
+import { WishlistButton } from "@/components/shop/WishlistButton";
 
 const Lightbox = lazy(() => import("@/components/shop/Lightbox").then((module) => ({ default: module.Lightbox })));
 
@@ -62,6 +69,22 @@ function ProductPage() {
   const pairings = products.filter((p) => p.id !== product.id).slice(0, 3);
   const savings = product.oldPrice ? product.oldPrice - product.price : 0;
   const images = product.images ?? [product.image, product.image, product.image, product.image];
+
+  // Live DB lookup for reviews/QA/wishlist — only mounts those sections if the slug exists in DB.
+  const fetchBySlug = useServerFn(getProductBySlug);
+  const recordRV = useServerFn(recordRecentlyViewed);
+  const { user } = useAuth();
+  const { data: dbProduct } = useQuery({
+    queryKey: ["db-product", product.slug],
+    queryFn: () => fetchBySlug({ data: { slug: product.slug } }),
+  });
+
+  useEffect(() => {
+    if (user && dbProduct?.id) {
+      recordRV({ data: { product_id: dbProduct.id } }).catch(() => {});
+    }
+  }, [user, dbProduct?.id, recordRV]);
+
 
   const handleAdd = () => {
     cart.add({
@@ -198,13 +221,20 @@ function ProductPage() {
                   Add to bag — Rs {(product.price * qty).toLocaleString()}
                   <ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition" strokeWidth={1.5} />
                 </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.01 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="w-full h-12 mt-2 border border-coal/15 eyebrow flex items-center justify-center gap-2 hover:bg-paper transition"
-                >
-                  <Heart className="size-3.5" strokeWidth={1.5} /> Save to wishlist
-                </motion.button>
+                {dbProduct?.id ? (
+                  <WishlistButton
+                    productId={dbProduct.id}
+                    className="w-full h-12 mt-2 border border-coal/15 eyebrow hover:bg-paper transition"
+                  />
+                ) : (
+                  <motion.button
+                    whileHover={{ scale: 1.01 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="w-full h-12 mt-2 border border-coal/15 eyebrow flex items-center justify-center gap-2 hover:bg-paper transition"
+                  >
+                    <Heart className="size-3.5" strokeWidth={1.5} /> Save to wishlist
+                  </motion.button>
+                )}
 
                 <div className="mt-6 pt-6 border-t border-coal/10 grid grid-cols-3 gap-3 text-[10px] eyebrow text-coal/60">
                   <div className="flex flex-col items-start gap-1"><Truck className="size-4 text-coal" strokeWidth={1.4}/>Pakistan-wide</div>
@@ -327,6 +357,13 @@ function ProductPage() {
           </div>
         </div>
       </section>
+
+      {dbProduct?.id && (
+        <>
+          <ReviewsSection productId={dbProduct.id} fallbackRating={product.rating} fallbackCount={product.reviews} />
+          <QASection productId={dbProduct.id} />
+        </>
+      )}
 
       {lightbox !== null && (
         <Suspense fallback={null}>

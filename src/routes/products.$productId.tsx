@@ -358,6 +358,13 @@ function ProductPage() {
         </div>
       </section>
 
+      {dbProduct?.id && (
+        <>
+          <ReviewsSection productId={dbProduct.id} fallbackRating={product.rating} fallbackCount={product.reviews} />
+          <QASection productId={dbProduct.id} />
+        </>
+      )}
+
       {lightbox !== null && (
         <Suspense fallback={null}>
           <Lightbox images={images} index={lightbox} onClose={() => setLightbox(null)} onIndex={setLightbox} />

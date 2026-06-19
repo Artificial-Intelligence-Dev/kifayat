@@ -31,16 +31,28 @@ export const isAdmin = createServerFn({ method: "GET" })
 export const claimAdminIfFirst = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
-    const { count } = await supabaseAdmin
-      .from("user_roles")
-      .select("id", { count: "exact", head: true })
-      .eq("role", "admin");
-    if ((count ?? 0) > 0) return { claimed: false, reason: "An admin already exists." };
-    const { error } = await supabaseAdmin
-      .from("user_roles")
-      .insert({ user_id: context.userId, role: "admin" });
-    if (error) throw new Error(error.message);
-    return { claimed: true };
+    // This bootstrap requires elevated privileges (writing user_roles bypasses
+    // RLS). Without the service_role key it cannot run safely, so degrade
+    // gracefully — a seeded admin account already exists for this project.
+    try {
+      const { count, error: countErr } = await supabaseAdmin
+        .from("user_roles")
+        .select("id", { count: "exact", head: true })
+        .eq("role", "admin");
+      if (countErr) {
+        return { claimed: false, reason: "Admin bootstrap unavailable (service role key not configured)." };
+      }
+      if ((count ?? 0) > 0) return { claimed: false, reason: "An admin already exists." };
+      const { error } = await supabaseAdmin
+        .from("user_roles")
+        .insert({ user_id: context.userId, role: "admin" });
+      if (error) {
+        return { claimed: false, reason: "Admin bootstrap unavailable (service role key not configured)." };
+      }
+      return { claimed: true };
+    } catch {
+      return { claimed: false, reason: "Admin bootstrap unavailable (service role key not configured)." };
+    }
   });
 
 // ─────────── Dashboard / analytics ───────────
@@ -56,13 +68,13 @@ export const adminDashboardStats = createServerFn({ method: "GET" })
     const since30d = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
     const [orders30, productsAll, customersTotal, reviewsPending, qPending, lowStock, searchToday] = await Promise.all([
-      supabaseAdmin.from("orders").select("id, total, status, created_at, user_id").gte("created_at", since30d.toISOString()),
-      supabaseAdmin.from("products").select("id, name, stock, price, image_url, slug"),
-      supabaseAdmin.from("profiles").select("id", { count: "exact", head: true }),
-      supabaseAdmin.from("product_reviews").select("id", { count: "exact", head: true }).eq("status", "pending"),
-      supabaseAdmin.from("product_questions").select("id", { count: "exact", head: true }).eq("status", "pending"),
-      supabaseAdmin.from("products").select("id, name, slug, stock, image_url").lt("stock", 5).order("stock", { ascending: true }).limit(10),
-      supabaseAdmin.from("search_queries").select("id", { count: "exact", head: true }).gte("created_at", since7d.toISOString()),
+      context.supabase.from("orders").select("id, total, status, created_at, user_id").gte("created_at", since30d.toISOString()),
+      context.supabase.from("products").select("id, name, stock, price, image_url, slug"),
+      context.supabase.from("profiles").select("id", { count: "exact", head: true }),
+      context.supabase.from("product_reviews").select("id", { count: "exact", head: true }).eq("status", "pending"),
+      context.supabase.from("product_questions").select("id", { count: "exact", head: true }).eq("status", "pending"),
+      context.supabase.from("products").select("id, name, slug, stock, image_url").lt("stock", 5).order("stock", { ascending: true }).limit(10),
+      context.supabase.from("search_queries").select("id", { count: "exact", head: true }).gte("created_at", since7d.toISOString()),
     ]);
 
     const orders = orders30.data ?? [];
@@ -98,7 +110,7 @@ export const adminDashboardStats = createServerFn({ method: "GET" })
     // Top products by units sold (last 30d)
     const orderIds = orders.map((o: any) => o.id);
     const { data: items } = orderIds.length
-      ? await supabaseAdmin
+      ? await context.supabase
           .from("order_items")
           .select("product_id, product_name, quantity, line_total")
           .in("order_id", orderIds)
@@ -143,7 +155,7 @@ export const adminListOrders = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await requireAdmin(context.supabase, context.userId);
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await context.supabase
       .from("orders")
       .select("id, order_number, contact_name, contact_phone, city, province, total, status, payment_method, created_at")
       .order("created_at", { ascending: false })
@@ -157,7 +169,7 @@ export const adminGetOrder = createServerFn({ method: "GET" })
   .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     await requireAdmin(context.supabase, context.userId);
-    const { data: order, error } = await supabaseAdmin
+    const { data: order, error } = await context.supabase
       .from("orders")
       .select("*, order_items(*), order_status_history(status, note, created_at)")
       .eq("id", data.id)
@@ -178,7 +190,7 @@ export const adminUpdateOrderStatus = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await requireAdmin(context.supabase, context.userId);
-    const { error } = await supabaseAdmin
+    const { error } = await context.supabase
       .from("orders")
       .update({ status: data.status })
       .eq("id", data.id);
@@ -192,7 +204,7 @@ export const adminListProducts = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     await requireAdmin(context.supabase, context.userId);
-    const { data, error } = await supabaseAdmin
+    const { data, error } = await context.supabase
       .from("products")
       .select("id, slug, name, brand, price, old_price, stock, featured, badge, image_url, category_id, avg_rating, review_count, categories(slug,name)")
       .order("created_at", { ascending: false });
@@ -220,7 +232,7 @@ export const adminUpsertProduct = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => UpsertProductSchema.parse(input))
   .handler(async ({ data, context }) => {
     await requireAdmin(context.supabase, context.userId);
-    const { error } = await supabaseAdmin.from("products").upsert(data, { onConflict: "slug" });
+    const { error } = await context.supabase.from("products").upsert(data, { onConflict: "slug" });
     if (error) throw new Error(error.message);
     return { ok: true };
   });
@@ -230,7 +242,7 @@ export const adminDeleteProduct = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => z.object({ id: z.string().uuid() }).parse(input))
   .handler(async ({ data, context }) => {
     await requireAdmin(context.supabase, context.userId);
-    const { error } = await supabaseAdmin.from("products").delete().eq("id", data.id);
+    const { error } = await context.supabase.from("products").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });
@@ -242,7 +254,7 @@ export const adminListReviews = createServerFn({ method: "GET" })
   .inputValidator((input: unknown) => z.object({ status: z.enum(["pending", "approved", "rejected", "all"]).optional().default("all") }).parse(input ?? {}))
   .handler(async ({ data, context }) => {
     await requireAdmin(context.supabase, context.userId);
-    let q = supabaseAdmin
+    let q = context.supabase
       .from("product_reviews")
       .select("id, product_id, user_id, rating, title, body, verified_purchase, status, created_at, products(name, slug), profiles(full_name)")
       .order("created_at", { ascending: false })
@@ -260,7 +272,7 @@ export const adminSetReviewStatus = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await requireAdmin(context.supabase, context.userId);
-    const { error } = await supabaseAdmin.from("product_reviews").update({ status: data.status }).eq("id", data.id);
+    const { error } = await context.supabase.from("product_reviews").update({ status: data.status }).eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
   });

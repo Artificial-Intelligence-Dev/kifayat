@@ -47,7 +47,7 @@ export const submitReview = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => ReviewSchema.parse(input))
   .handler(async ({ data, context }) => {
     // Verified purchase if the user has any delivered order with this product
-    const { data: purchase } = await supabaseAdmin
+    const { data: purchase } = await context.supabase
       .from("order_items")
       .select("order_id, orders!inner(user_id, status)")
       .eq("product_id", data.product_id)
@@ -55,7 +55,7 @@ export const submitReview = createServerFn({ method: "POST" })
       .limit(1)
       .maybeSingle();
     const verified = !!purchase;
-    const { error } = await supabaseAdmin
+    const { error } = await context.supabase
       .from("product_reviews")
       .upsert(
         {

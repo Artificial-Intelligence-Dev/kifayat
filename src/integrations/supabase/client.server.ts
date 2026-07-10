@@ -8,18 +8,31 @@ import type { Database } from './types';
 function createSupabaseAdminClient() {
   const SUPABASE_URL = process.env.SUPABASE_URL;
   const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  // Fallback for local development where the managed service_role key is not
+  // available (e.g. Lovable Cloud injects it only in the hosted runtime).
+  // In that mode this client runs with the publishable (anon) key, so RLS is
+  // enforced. Public reads and order placement still work; privileged
+  // operations should go through the authenticated user's client instead.
+  const SUPABASE_PUBLISHABLE_KEY = process.env.SUPABASE_PUBLISHABLE_KEY;
+  const key = SUPABASE_SERVICE_ROLE_KEY || SUPABASE_PUBLISHABLE_KEY;
 
-  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+  if (!SUPABASE_URL || !key) {
     const missing = [
       ...(!SUPABASE_URL ? ['SUPABASE_URL'] : []),
-      ...(!SUPABASE_SERVICE_ROLE_KEY ? ['SUPABASE_SERVICE_ROLE_KEY'] : []),
+      ...(!key ? ['SUPABASE_SERVICE_ROLE_KEY or SUPABASE_PUBLISHABLE_KEY'] : []),
     ];
     const message = `Missing Supabase environment variable(s): ${missing.join(', ')}. Connect Supabase in Lovable Cloud.`;
     console.error(`[Supabase] ${message}`);
     throw new Error(message);
   }
 
-  return createClient<Database>(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, {
+  if (!SUPABASE_SERVICE_ROLE_KEY) {
+    console.warn(
+      '[Supabase] SUPABASE_SERVICE_ROLE_KEY not set — server admin client is running with the publishable (anon) key under RLS. Privileged operations rely on the authenticated user\'s session.'
+    );
+  }
+
+  return createClient<Database>(SUPABASE_URL, key, {
     auth: {
       storage: undefined,
       persistSession: false,
